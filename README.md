@@ -14,13 +14,17 @@ add/edit UI (no need to hand-edit config files, though you can if you want).
 - **Auto-categorization**: when you add a service, if you leave "Category"
   blank the app guesses one from the name/URL (e.g. "Plex" → Media,
   "Pi-hole" → Network). You can always override it.
-- **Manual add/edit/delete**: click "+ Add service" or the ✎ icon on any
+- **Manual add/edit/delete**: click "+ Add channel" or the ✎ icon on any
   card. Services live across different hosts/nodes — there's an optional
   "node" field to note which machine a service runs on.
-- **Live status dots**: the backend pings each service URL every 60s
-  (3s timeout) and shows a green/red dot on its card. The frontend refreshes
+- **Live status**: the backend pings each service URL every 60s (3s timeout)
+  and shows an on-air/fault toggle+LED on its card. The frontend refreshes
   status every 30s without a full reload.
 - **Search**: filter cards by name, category, node, or description.
+- **Themes**: three built-in looks, switchable from the top rail and
+  remembered per browser (`localStorage`) — **Panel** (default instrument-panel
+  look), **Dark** (flat minimal dark), and **Light** (clean minimal SaaS look).
+  See `DESIGN.md` for the full token system behind them.
 
 ## Setup
 

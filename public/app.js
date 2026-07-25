@@ -1,3 +1,24 @@
+const THEME_KEY = 'homelab-theme';
+const THEMES = ['panel', 'minimal-dark', 'minimal-light'];
+const themeSwitch = document.getElementById('themeSwitch');
+
+function applyTheme(theme, persist) {
+  if (!THEMES.includes(theme)) theme = 'panel';
+  document.documentElement.setAttribute('data-theme', theme);
+  themeSwitch.querySelectorAll('.theme-switch-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.themeValue === theme);
+  });
+  if (persist) {
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+  }
+}
+
+themeSwitch.querySelectorAll('.theme-switch-btn').forEach((btn) => {
+  btn.addEventListener('click', () => applyTheme(btn.dataset.themeValue, true));
+});
+
+applyTheme(document.documentElement.getAttribute('data-theme') || 'panel', false);
+
 const board = document.getElementById('board');
 const emptyMsg = document.getElementById('empty');
 const searchInput = document.getElementById('search');

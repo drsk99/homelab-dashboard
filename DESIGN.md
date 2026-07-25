@@ -2,22 +2,22 @@
 name: Homelab Control Panel
 description: A ham-radio transceiver control panel for operating self-hosted services
 colors:
-  chassis: "#1a1b1e"
-  chassis-edge: "#0e0f11"
-  panel: "#232529"
-  panel-hover: "#2a2c31"
-  bezel: "#383b41"
-  bezel-hi: "#4a4d54"
+  bg-1: "#1a1b1e"
+  bg-2: "#0e0f11"
+  surface-1: "#232529"
+  surface-hover-1: "#2a2c31"
+  border: "#383b41"
+  border-hi: "#4a4d54"
   rivet: "#55585f"
-  plate-text: "#d8dade"
-  plate-dim: "#83878f"
+  text: "#d8dade"
+  text-dim: "#83878f"
   led-ok: "#35d07f"
   led-down: "#ff5056"
   led-unknown: "#6b7078"
-  amber: "#ffb020"
-  amber-dim: "#7a5416"
+  accent: "#ffb020"
+  accent-dim: "#7a5416"
 typography:
-  plate:
+  display:
     fontFamily: "Big Shoulders Text, Arial Narrow, sans-serif"
     fontWeight: 700
     letterSpacing: "0.02em"
@@ -34,13 +34,13 @@ spacing:
   lg: "28px"
 components:
   panel-btn:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.plate-text}"
+    backgroundColor: "{colors.surface-1}"
+    textColor: "{colors.text}"
     rounded: "{rounded.md}"
     padding: "9px 16px"
   panel-btn-primary:
-    backgroundColor: "{colors.amber-dim}"
-    textColor: "{colors.amber}"
+    backgroundColor: "{colors.accent-dim}"
+    textColor: "{colors.accent}"
     rounded: "{rounded.md}"
     padding: "9px 16px"
 ---
@@ -69,6 +69,31 @@ single amber accent reserved for backlighting rather than decoration.
   functional status lamps, never decorative.
 - Sharp, machined-metal corners (3–4px) instead of soft SaaS rounding.
 - Condensed industrial caps for names/labels; a distinct mono face for readouts and metadata.
+
+### Theming
+
+The system ships as three selectable themes sharing one component structure and one token
+vocabulary (`--bg-1`, `--surface-1`, `--border`, `--text`, `--accent`, `--led-*`, `--radius`,
+`--font-display`, `--font-mono`, etc., defined in `public/styles.css`). A theme is nothing more
+than a full re-assignment of that token set under `[data-theme="..."]` on `<html>`; no component
+rule ever hardcodes a color, shadow, or font outside these variables. The active theme is chosen
+by the `.theme-switch` control in the top rail and persisted to `localStorage`
+(`homelab-theme`), read by a blocking inline script in `<head>` before first paint to avoid a
+flash of the wrong theme.
+
+- **Panel** (`data-theme="panel"`, default): the instrument-panel world described above —
+  brushed metal texture, bevels, glow, condensed/mono type pairing.
+- **Minimal Dark** (`data-theme="minimal-dark"`): the same structure with all metal/glow removed
+  — flat single-tone surfaces, no bevel highlight (`--border-hi` equals `--border`), no LED glow
+  (`--led-ok-glow`/`--led-down-glow` are `none`), a muted slate-blue accent (`#6c8ee0`), and
+  system UI fonts in place of the industrial pairing.
+- **Minimal Light** (`data-theme="minimal-light"`): the calm SaaS register — white surfaces, soft
+  ambient shadows instead of insets, the same slate-blue-family accent (`#3b5bdb`) but solid-fill
+  on the primary button (white text) rather than backlit outline text, system UI fonts.
+
+**The One Token Set Rule.** Every theme reassigns the same variable names; none may introduce a
+component-specific override. This is what keeps three themes cheap to maintain and guarantees a
+fourth theme is "define 30-ish variables," not "restyle every component."
 
 ## Colors
 

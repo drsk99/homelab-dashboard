@@ -110,7 +110,7 @@ app.put('/api/services/:id', (req, res) => {
     ...existing,
     name: name ?? existing.name,
     url: url ?? existing.url,
-    category: category !== undefined && category.trim() !== '' ? category.trim() : existing.category,
+    category: category && category.trim() !== '' ? category.trim() : existing.category,
     icon: icon ?? existing.icon,
     description: description ?? existing.description,
     node: node ?? existing.node,
