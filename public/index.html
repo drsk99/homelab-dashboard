@@ -1,30 +1,92 @@
+<!--
+  DIRECTION CONTRACT
+  THESIS: the dashboard is a physical instrument you operate, not a page that
+  lists services — it refuses the generic dark-SaaS card grid every AI-built
+  dashboard lands on.
+  OWN-WORLD: a ham-radio transceiver control panel — brushed gunmetal chassis,
+  engraved aluminum label plates, amber LCD-style readouts, and a toggle
+  switch + LED lamp per channel (green=on-air, red=fault, amber=standby).
+  STORY: the operator scans a bank of channels at a glance, flips to a
+  channel to open it, and patches in a new channel through an access hatch.
+  FIRST VIEWPORT: the chassis top rail — unit nameplate, a live ON-AIR/FAULT
+  LCD readout, and a knurled tuner-style search — sits above rack modules of
+  channel toggles grouped by category.
+  FORM: assigned direction 6 of 7 (ham radio control panel), grounded list
+  ordered rack-elevation > breaker-panel > patch-bay > label-tape > NOC-wall >
+  ham-radio-panel > pull-tag; weighed against the nixie-tube-counter
+  challenger and won on product clarity (per-service toggle+LED scales to a
+  variable list of named channels; nixie digit banks do not). Staging: fixed
+  module grid (rejected the dealt radial-sweep staging — decay-fade misreads
+  simple up/down state and blocks precise click targets).
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Homelab Dashboard</title>
+<title>Homelab :: Control Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@500;700;800&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <h1>🏠 Homelab</h1>
-    <div class="topbar-controls">
-      <input id="search" type="text" placeholder="Search services…" autocomplete="off" />
-      <button id="addBtn" class="btn btn-primary">+ Add service</button>
+  <header class="chassis-rail">
+    <div class="nameplate">
+      <svg class="nameplate-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      <div class="nameplate-text">
+        <h1>HOMELAB<span class="nameplate-sub">CONTROL&nbsp;PANEL</span></h1>
+      </div>
+    </div>
+
+    <div class="readout-bank" id="readoutBank" aria-live="polite">
+      <div class="readout">
+        <span class="readout-label">ON-AIR</span>
+        <span class="readout-value ok" id="countOk">--</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">FAULT</span>
+        <span class="readout-value down" id="countDown">--</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">TOTAL</span>
+        <span class="readout-value" id="countTotal">--</span>
+      </div>
+    </div>
+
+    <div class="rail-controls">
+      <div class="tuner">
+        <svg class="tuner-knob" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <line x1="12" y1="12" x2="12" y2="5"/>
+        </svg>
+        <input id="search" type="text" placeholder="TUNE // search channels…" autocomplete="off" />
+      </div>
+      <button id="addBtn" class="panel-btn panel-btn-primary">+ ADD CHANNEL</button>
     </div>
   </header>
 
-  <main id="board" class="board">
-    <!-- category sections injected here -->
+  <main id="board" class="rack">
+    <!-- category modules injected here -->
   </main>
 
-  <p id="empty" class="empty hidden">No services yet. Click "Add service" to get started.</p>
+  <p id="empty" class="empty hidden">NO CHANNELS PATCHED — press "+ ADD CHANNEL" to wire one up.</p>
 
   <!-- Add/Edit modal -->
   <div id="modalOverlay" class="modal-overlay hidden">
     <div class="modal">
-      <h2 id="modalTitle">Add service</h2>
+      <div class="modal-header">
+        <svg class="modal-hatch-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 2l8 4.5v9L12 20l-8-4.5v-9L12 2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <h2 id="modalTitle">Patch new channel</h2>
+      </div>
       <form id="serviceForm">
         <input type="hidden" id="serviceId" />
         <label>Name
@@ -47,10 +109,10 @@
           <input id="fDescription" type="text" placeholder="Short note" />
         </label>
         <div class="modal-actions">
-          <button type="button" id="deleteBtn" class="btn btn-danger hidden">Delete</button>
+          <button type="button" id="deleteBtn" class="panel-btn panel-btn-danger hidden">Unpatch</button>
           <div class="modal-actions-right">
-            <button type="button" id="cancelBtn" class="btn">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" id="cancelBtn" class="panel-btn">Cancel</button>
+            <button type="submit" class="panel-btn panel-btn-primary">Save</button>
           </div>
         </div>
       </form>

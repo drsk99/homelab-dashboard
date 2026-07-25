@@ -1,6 +1,9 @@
 const board = document.getElementById('board');
 const emptyMsg = document.getElementById('empty');
 const searchInput = document.getElementById('search');
+const countOk = document.getElementById('countOk');
+const countDown = document.getElementById('countDown');
+const countTotal = document.getElementById('countTotal');
 const addBtn = document.getElementById('addBtn');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalTitle = document.getElementById('modalTitle');
@@ -55,6 +58,7 @@ function render() {
   );
 
   emptyMsg.classList.toggle('hidden', services.length > 0);
+  updateReadouts();
   board.innerHTML = '';
 
   if (filtered.length === 0) {
@@ -97,13 +101,22 @@ function render() {
 function renderCard(s) {
   const status = statuses[s.id];
   const statusClass = status ? (status.ok ? 'ok' : 'down') : '';
+  const statusTitle = status ? (status.ok ? 'On-air' : 'Fault') : 'Standby / unknown';
   const icon = s.icon && s.icon.trim() ? s.icon : '🔗';
   return `
     <a class="card" href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer">
-      <button class="card-edit" data-edit-id="${s.id}" title="Edit">✎</button>
+      <button class="card-edit" data-edit-id="${s.id}" title="Edit">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+        </svg>
+      </button>
       <div class="card-top">
         <span class="card-icon">${icon}</span>
-        <span class="status-dot ${statusClass}" title="${status ? (status.ok ? 'Online' : 'Unreachable') : 'Unknown'}"></span>
+        <span class="switch-lamp" title="${statusTitle}">
+          <span class="toggle ${statusClass}"></span>
+          <span class="status-dot ${statusClass}"></span>
+        </span>
       </div>
       <p class="card-name">${escapeHtml(s.name)}</p>
       ${s.description ? `<p class="card-desc">${escapeHtml(s.description)}</p>` : ''}
@@ -114,8 +127,17 @@ function renderCard(s) {
   `;
 }
 
+function updateReadouts() {
+  const values = Object.values(statuses);
+  const ok = values.filter((v) => v && v.ok).length;
+  const down = values.filter((v) => v && !v.ok).length;
+  countOk.textContent = String(ok).padStart(2, '0');
+  countDown.textContent = String(down).padStart(2, '0');
+  countTotal.textContent = String(services.length).padStart(2, '0');
+}
+
 function openAdd() {
-  modalTitle.textContent = 'Add service';
+  modalTitle.textContent = 'Patch new channel';
   serviceForm.reset();
   fId.value = '';
   deleteBtn.classList.add('hidden');
@@ -126,7 +148,7 @@ function openAdd() {
 function openEdit(id) {
   const s = services.find((x) => x.id === id);
   if (!s) return;
-  modalTitle.textContent = 'Edit service';
+  modalTitle.textContent = 'Reconfigure channel';
   fId.value = s.id;
   fName.value = s.name;
   fUrl.value = s.url;
