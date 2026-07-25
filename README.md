@@ -4,6 +4,8 @@ A simple, clean dashboard for viewing all your homelab services in one place —
 grouped into categories automatically, with live up/down status, and a manual
 add/edit UI (no need to hand-edit config files, though you can if you want).
 
+![Screenshot of the dashboard showing service cards grouped by category](docs/screenshot.png)
+
 ## Features
 
 - **Category grid**: services are grouped into sections (Media, Network,
