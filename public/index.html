@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Homelab Dashboard</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>🏠 Homelab</h1>
+    <div class="topbar-controls">
+      <input id="search" type="text" placeholder="Search services…" autocomplete="off" />
+      <button id="addBtn" class="btn btn-primary">+ Add service</button>
+    </div>
+  </header>
+
+  <main id="board" class="board">
+    <!-- category sections injected here -->
+  </main>
+
+  <p id="empty" class="empty hidden">No services yet. Click "Add service" to get started.</p>
+
+  <!-- Add/Edit modal -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h2 id="modalTitle">Add service</h2>
+      <form id="serviceForm">
+        <input type="hidden" id="serviceId" />
+        <label>Name
+          <input id="fName" type="text" required placeholder="e.g. Plex" />
+        </label>
+        <label>URL
+          <input id="fUrl" type="text" required placeholder="http://192.168.1.10:32400" />
+        </label>
+        <label>Category
+          <input id="fCategory" list="categoryList" placeholder="Leave blank to auto-detect" />
+          <datalist id="categoryList"></datalist>
+        </label>
+        <label>Icon (emoji, optional)
+          <input id="fIcon" type="text" maxlength="4" placeholder="🎬" />
+        </label>
+        <label>Node / host (optional)
+          <input id="fNode" type="text" placeholder="e.g. server1" />
+        </label>
+        <label>Description (optional)
+          <input id="fDescription" type="text" placeholder="Short note" />
+        </label>
+        <div class="modal-actions">
+          <button type="button" id="deleteBtn" class="btn btn-danger hidden">Delete</button>
+          <div class="modal-actions-right">
+            <button type="button" id="cancelBtn" class="btn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

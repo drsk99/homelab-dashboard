@@ -1,0 +1,255 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-hover: #1e2229;
+  --border: #262b34;
+  --text: #e6e8eb;
+  --text-dim: #8a90a0;
+  --accent: #5b8cff;
+  --accent-dim: #2a3a63;
+  --ok: #3ecf8e;
+  --down: #ef5a5a;
+  --unknown: #6b7280;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.topbar h1 {
+  font-size: 20px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.topbar-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+#search {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  width: 220px;
+}
+
+#search:focus { outline: 1px solid var(--accent); }
+
+.btn {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn:hover { background: var(--panel-hover); }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0c1220;
+  font-weight: 600;
+}
+
+.btn-primary:hover { filter: brightness(1.08); }
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--down);
+  color: var(--down);
+}
+
+.board {
+  padding: 24px 32px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.category {
+  margin-bottom: 32px;
+}
+
+.category-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin: 0 0 12px 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  position: relative;
+  transition: background 0.15s, transform 0.1s;
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.card:hover {
+  background: var(--panel-hover);
+  transform: translateY(-1px);
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.card-icon {
+  font-size: 22px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--unknown);
+  flex-shrink: 0;
+}
+
+.status-dot.ok { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+.status-dot.down { background: var(--down); box-shadow: 0 0 6px var(--down); }
+
+.card-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.card-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 0 0 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 6px;
+  border: none;
+  color: var(--text-dim);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.1s;
+  font-size: 13px;
+}
+
+.card:hover .card-edit { opacity: 1; }
+.card-edit:hover { color: var(--text); background: rgba(0,0,0,0.55); }
+
+.empty {
+  text-align: center;
+  color: var(--text-dim);
+  margin-top: 80px;
+}
+
+.hidden { display: none !important; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 380px;
+  max-width: 90vw;
+}
+
+.modal h2 {
+  margin: 0 0 16px;
+  font-size: 17px;
+}
+
+.modal label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.modal input {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.modal input:focus { outline: 1px solid var(--accent); }
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.modal-actions-right {
+  display: flex;
+  gap: 8px;
+}
